@@ -1,3 +1,8 @@
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) window.location.href = "pages/home/home.html"
+})
+
+
 const elements = {
     email: () => document.getElementById('email').value,
     password: () => document.getElementById('password').value,
@@ -8,6 +13,7 @@ const elements = {
     emailEmpty: () => document.getElementById('emailEmptyError'),
     passwordEmpty: () => document.getElementById('passwordEmptyError'),
     loginError: () => document.getElementById('loginError'),
+    recoverFeedback: () => document.getElementById('recoverPasswordFeedback'),
 }
 
 
@@ -45,6 +51,12 @@ function showLoginErrorBox(errorMessage) {
 }
 
 
+function showRecoverFeedback() {
+    elements.recoverFeedback().style.display = "block";
+    elements.loginError().style.display = "none";
+}
+
+
 function loginUser() {
     
     showLoading();
@@ -63,7 +75,7 @@ function recoverPassword() {
     showLoading()
     firebase.auth().sendPasswordResetEmail(elements.email()).then(() => {
         hideLoading();
-        alert('Email de recuperação enviado com sucesso');
+        showRecoverFeedback();
 
     }).catch(error => {
         hideLoading();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,12 @@
 </head>
 <body class="centralize">
     
-    <form>
+    <form id="form">
 
         <div class="centralize"><img src="src/Logo Focus redimensionada.png" alt="Logo da Empresa"></div>
 
         <div class="input-field">
-            <input class="form-field" name="email" id="email" type="email" placeholder="Usuário" required>
+            <input class="form-field" name="email" id="email" type="email" placeholder="E-mail" required>
             <!--  <label class="form-label" for="email">Usuário</label>  -->
         </div>
 
@@ -22,6 +22,7 @@
         </div>
         
         <div class="error" id="loginError"></div>
+        <div class="feedback" id="recoverPasswordFeedback">Email de recuperação enviado.</div>
 
         <button class="clear" id="recover" type="button" onClick="recoverPassword()">RECUPERAR SENHA</button>
         <button class="solid" id="login" type="button" onClick="loginUser()">ENTRAR</button>
@@ -35,7 +36,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
 <script src="firabaseInit.js"></script>
-<script src="validations.js"></script>
 <script src="loading.js"></script>
 <script src="index.js"></script>
 </html>

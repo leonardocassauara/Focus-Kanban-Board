@@ -1,12 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
 <body>
-    <h1>The Kanban Board Prototype</h1>
-    <hr>
+    <header>
+        <button id="logout" class="clear" type="button" onclick="logout()">SAIR</button>
+    </header>
+    
+    <div class="centralizeHome">
+        
+        <div id="todo" class="content-container">
+            <div class="title">Todo</div>
+            <hr>
+            <ul id="ulTodo" class="cards-container"></ul>
+        </div>
+
+
+        <div id="doing" class="content-container">
+            <div class="title">Doing</div>
+            <hr>
+            <ul id="ulDoing" class="cards-container"></ul>
+        </div>
+
+
+        <div id="review" class="content-container">
+            <div class="title">Review</div>
+            <hr>
+            <ul id="ulReview" class="cards-container"></ul>
+        </div>
+
+
+        <div id="done" class="content-container">
+            <div class="title">Done</div>
+            <hr>
+            <ul id="ulDone" class="cards-container"></ul>
+        </div>
+    </div>
+
 </body>
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="../../global.css">
+<script src="../../loading.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+<script src="../../firabaseInit.js"></script>
+<script src="../../authGuard.js"></script>
+<script src="home.js"></script>
 </html>
