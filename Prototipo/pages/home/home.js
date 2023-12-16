@@ -14,73 +14,10 @@ const columnsField = {
 }
 
 
-/*
-const fakeKanban = [
-    [
-        {title: "Estudar"},
-        {title: "Relaxar"},
-    ],
-    [
-        {title: "Trainee"},
-    ],
-    [
-        {title: "Abordagem"},
-    ],
-    [
-        {title: "Período"},
-    ],
-]
-*/
+findCards()
 
 
-const fakeKanban2 = {
-    todo: ["Estudar", "Relaxar"],
-    doing: ["Trainee"],
-    review: ["Abordagem", "Backend"],
-    done: ["Período"]
-}
-
-
-findCards2()
-
-
-// Modelo Fake
-/*
 function findCards() {
-    setTimeout(() => {
-        addCardsToScreen(fakeKanban);
-    }, 1000)
-}
-
-
-function addCardsToScreen(cards) {
-    const todoField = columnsField.ulTodo()
-    const doingField = columnsField.ulDoing()
-    const reviewField = columnsField.ulReview()
-    const doneField = columnsField.ulDone()
-
-    let i = 0;
-
-    cards.forEach(cards => {
-        
-        cards.forEach(card => {
-            const li = document.createElement('li');
-            li.className = "card";
-            li.innerText = card.title
-
-            if (i == 0) todoField.appendChild(li);
-            else if (i == 1) doingField.appendChild(li);
-            else if (i == 2) reviewField.appendChild(li);
-            else doneField.appendChild(li);
-        })
-        
-        i++;
-    })
-}
-*/
-
-// Modelo da Firebase
-function findCards2() {
     showLoading();
     firebase.firestore()
         .collection('colunas')
@@ -91,7 +28,7 @@ function findCards2() {
             snapshot.docs.forEach(doc => {
                 cards = doc.data()
             })
-            addCardsToScreen2(cards)
+            addCardsToScreen(cards)
         }).catch(error => {
             hideLoading()
             console.log(error)
@@ -100,7 +37,7 @@ function findCards2() {
 }
 
 
-function addCardsToScreen2(cards) {
+function addCardsToScreen(cards) {
     const todoField = columnsField.ulTodo()
     const doingField = columnsField.ulDoing()
     const reviewField = columnsField.ulReview()
@@ -146,3 +83,79 @@ function logout() {
         alert("Erro, tente novamente.")
     })
 }
+
+
+/*
+function getUserUid() {
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) return user.id
+    })
+}
+
+
+function isCurrentUserFirstAcces() {
+        
+    return new Promise((resolve) => firebase.firestore().collection('usuarios').get().then(snapshot => {    
+        let isFirstAcces = true
+        snapshot.forEach(doc => {
+                if (getUserUid() == doc.id) isFirstAcces = false
+            })
+        resolve(isFirstAcces)
+        }).catch(error => {
+            alert("Erro ao verificar primeiro acesso.")
+        })
+    )
+}
+*/
+
+
+// Modelo Fake
+/*
+
+const fakeKanban = [
+    [
+        {title: "Estudar"},
+        {title: "Relaxar"},
+    ],
+    [
+        {title: "Trainee"},
+    ],
+    [
+        {title: "Abordagem"},
+    ],
+    [
+        {title: "Período"},
+    ],
+]
+
+
+function findCards() {
+    setTimeout(() => {
+        addCardsToScreen(fakeKanban);
+    }, 1000)
+}
+function addCardsToScreen(cards) {
+    const todoField = columnsField.ulTodo()
+    const doingField = columnsField.ulDoing()
+    const reviewField = columnsField.ulReview()
+    const doneField = columnsField.ulDone()
+
+    let i = 0;
+
+    cards.forEach(cards => {
+        
+        cards.forEach(card => {
+            const li = document.createElement('li');
+            li.className = "card";
+            li.innerText = card.title
+
+            if (i == 0) todoField.appendChild(li);
+            else if (i == 1) doingField.appendChild(li);
+            else if (i == 2) reviewField.appendChild(li);
+            else doneField.appendChild(li);
+        })
+        
+        i++;
+    })
+}
+*/
