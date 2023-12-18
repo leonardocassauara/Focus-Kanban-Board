@@ -1,36 +1,6 @@
-.content-container {
-    padding-right: 30px;
-    padding-left: 30px;
-    padding-top: 40px;
-    padding-bottom: 50px;
-    min-width: 150px;
-    width: auto;
-    margin: 20px;
-    border-radius: 30px;
-    background: #FFF4F4;
-}
-
-@font-face {
-    font-family: 'Aileron';
-    src: url('../../src/Aileron-Regular.otf');
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'ClearSans';
-    src: url('../../src/ClearSans-Regular.ttf');
-    font-style: normal;
-}
-
-img {
-    width: 50px;
-    height: 50px;
-    color-scheme:;
-}
-
 header {
     text-align: right;
-    margin-top: 4px;
+    padding: 4px;
 }
 
 header button {
@@ -43,6 +13,10 @@ header button:hover {
     color: #2B2B2B;
 }
 
+button {
+    margin-bottom: 0px;
+}
+
 .clearHome {
     background: transparent;
     border: none;
@@ -53,6 +27,7 @@ header button:hover {
     font-family: 'Aileron';
     font-size: 30px;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 
 .card {
@@ -63,10 +38,11 @@ header button:hover {
     padding-left: 4px;
     border-radius: 4px;
     margin-bottom: 4px;
-    background: #FFF4F4;
+    color: #2B2B2B;
+    cursor: pointer;
 
     font-family: 'ClearSans';
-    font-weight: 300;
+    font-weight: 700;
 
     box-shadow: 0px 10px 27px 0px rgba(0,0,0,0.10);
     -webkit-box-shadow: 0px 10px 27px 0px rgba(0,0,0,0.10);
@@ -77,4 +53,30 @@ header button:hover {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+}
+
+ul {
+    margin-bottom: 20px;
+}
+
+body .outline {
+    margin-bottom: 0px;
+}
+
+.studio {
+    background: rgb(0, 0, 0, 0.3);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+}
+
+
+#idManager {
+    display: none;
+}
+
+.list-item {
+    font-family: 'ClearSans';
+    font-weight: 300;
 }

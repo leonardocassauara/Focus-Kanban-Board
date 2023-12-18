@@ -10,7 +10,6 @@
 <body>
     <header>
         <button id="logout" class="clearHome" type="button" onclick="logout()">SAIR</button>
-        <img src="../../src/admin_control_panel_icon_150307.png" alt="Ícone de painel de controle">
     </header>
     
     <div class="centralizeHome">
@@ -19,6 +18,7 @@
             <div class="title">Todo</div>
             <hr>
             <ul id="ulTodo" class="cards-container"></ul>
+            <button type="button" class="outline" id="todoNewCardBtn" onclick="openCardStudio()" >+ Add new task</button>
         </div>
 
 
@@ -42,7 +42,6 @@
             <ul id="ulDone" class="cards-container"></ul>
         </div>
     </div>
-
 </body>
 <link rel="stylesheet" href="home.css">
 <link rel="stylesheet" href="../../global.css">
@@ -51,6 +50,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
 <script src="../../firabaseInit.js"></script>
+<script src="../../services/card.service.js"></script>
 <script src="../../authGuard.js"></script>
 <script src="home.js"></script>
 </html>

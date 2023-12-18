@@ -1,0 +1,15 @@
+label {
+    font-family: 'Aileron';
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+select {
+    width: -webkit-fill-available;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+button[disabled] {
+    opacity: 0.5;
+}

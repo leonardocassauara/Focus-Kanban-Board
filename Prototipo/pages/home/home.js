@@ -1,78 +1,17 @@
-const columns = {
-    todo: () => document.getElementById('todo'),
-    doing: () => document.getElementById('doing'),
-    review: () => document.getElementById('review'),
-    done: () => document.getElementById('done'),
-}
-
-
 const columnsField = {
     ulTodo: () => document.getElementById('ulTodo'),
     ulDoing: () => document.getElementById('ulDoing'),
     ulReview: () => document.getElementById('ulReview'),
     ulDone: () => document.getElementById('ulDone')
 }
-
+const elements = {
+    todoBtn: () => document.getElementById('todoNewCardBtn'),
+    doingBtn: () => document.getElementById('doingNewCardBtn'),
+    reviewBtn: () => document.getElementById('reviewNewCardBtn'),
+    doneBtn: () => document.getElementById('doneNewCardBtn'),
+}
 
 findCards()
-
-
-function findCards() {
-    showLoading();
-    firebase.firestore()
-        .collection('colunas')
-        .get()
-        .then(snapshot => {
-            hideLoading()
-            let cards;
-            snapshot.docs.forEach(doc => {
-                cards = doc.data()
-            })
-            addCardsToScreen(cards)
-        }).catch(error => {
-            hideLoading()
-            console.log(error)
-            alert("Erro, tente novamente.")
-        })
-}
-
-
-function addCardsToScreen(cards) {
-    const todoField = columnsField.ulTodo()
-    const doingField = columnsField.ulDoing()
-    const reviewField = columnsField.ulReview()
-    const doneField = columnsField.ulDone()
-
-    cards.todo.forEach(card => {
-        const li = document.createElement('li');
-        li.className = "card";
-        li.innerText = card
-        todoField.appendChild(li)
-    })
-
-    cards.doing.forEach(card => {
-        const li = document.createElement('li');
-        li.className = "card";
-        li.innerText = card
-        doingField.appendChild(li)
-    })
-
-    cards.review.forEach(card => {
-        const li = document.createElement('li');
-        li.className = "card";
-        li.innerText = card
-        reviewField.appendChild(li)
-    })
-
-    cards.done.forEach(card => {
-        const li = document.createElement('li');
-        li.className = "card";
-        li.innerText = card
-        doneField.appendChild(li)
-    })
-}
-
-
 function logout() {
     showLoading()
     firebase.auth().signOut().then(() => {
@@ -85,77 +24,42 @@ function logout() {
 }
 
 
-/*
-function getUserUid() {
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) return user.id
-    })
-}
-
-
-function isCurrentUserFirstAcces() {
-        
-    return new Promise((resolve) => firebase.firestore().collection('usuarios').get().then(snapshot => {    
-        let isFirstAcces = true
-        snapshot.forEach(doc => {
-                if (getUserUid() == doc.id) isFirstAcces = false
-            })
-        resolve(isFirstAcces)
-        }).catch(error => {
-            alert("Erro ao verificar primeiro acesso.")
-        })
-    )
-}
-*/
-
-
-// Modelo Fake
-/*
-
-const fakeKanban = [
-    [
-        {title: "Estudar"},
-        {title: "Relaxar"},
-    ],
-    [
-        {title: "Trainee"},
-    ],
-    [
-        {title: "Abordagem"},
-    ],
-    [
-        {title: "Período"},
-    ],
-]
-
-
 function findCards() {
-    setTimeout(() => {
-        addCardsToScreen(fakeKanban);
-    }, 1000)
+    showLoading()
+    cardService.find()
+        .then(cards => {
+            hideLoading()
+            addCardsToScreen(cards)
+        })
+        .catch(error => {
+            hideLoading()
+            console.log(error)
+            alert('Erro ao recuperar tarefas')
+        })
 }
+
+
 function addCardsToScreen(cards) {
-    const todoField = columnsField.ulTodo()
-    const doingField = columnsField.ulDoing()
-    const reviewField = columnsField.ulReview()
-    const doneField = columnsField.ulDone()
-
-    let i = 0;
-
-    cards.forEach(cards => {
+    cards.forEach(card => {
+        const li = document.createElement('li')
         
-        cards.forEach(card => {
-            const li = document.createElement('li');
-            li.className = "card";
-            li.innerText = card.title
 
-            if (i == 0) todoField.appendChild(li);
-            else if (i == 1) doingField.appendChild(li);
-            else if (i == 2) reviewField.appendChild(li);
-            else doneField.appendChild(li);
+        li.className = 'card'
+        //li.id = card.id
+        li.innerText = card.title
+        li.addEventListener('click', () => {
+            window.location.href = "../cardStudio/cardStudio.html?uid=" + card.uid
         })
         
-        i++;
-    })
+
+        if (card.column == 'todo') columnsField.ulTodo().appendChild(li)
+        else if (card.column == 'doing') columnsField.ulDoing().appendChild(li)
+        else if (card.column == 'review') columnsField.ulReview().appendChild(li)
+        else if (card.column == 'done') columnsField.ulDone().appendChild(li)
+    }) 
 }
-*/
+
+
+function openCardStudio() {
+    window.location.href = "../cardStudio/cardStudio.html"
+}
