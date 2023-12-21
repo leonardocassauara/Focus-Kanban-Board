@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+hr {
+    margin-bottom: 4px;
+}
+
 .content-container {
     padding-right: 30px;
     padding-left: 30px;
@@ -16,10 +20,27 @@
     background: #FFF4F4;
 }
 
+label {
+    font-family: 'Aileron';
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
 body {
     margin: 0;
-    background: linear-gradient(180deg, #0032B9 0%, #89D5F5 100%);
+    background: linear-gradient(90deg, #0032B9 0%, #0067EC 50%,#29DBE2 100%);
+    background-size: 200% 100%;
+    animation: animated-gradient 5s infinite alternate;
     height: 100vh;
+}
+
+@keyframes animated-gradient {
+    0% {
+        background-position-x: 0%;
+      }
+    100% {
+        background-position-x: 100%;
+    }
 }
 
 .centralize {
@@ -127,8 +148,11 @@ button:active {
 }
 
 ul {
+    padding-top: 10px;
     list-style-type:none;
     padding-left: 0;
+    min-height: 100px;
+    width: -webkit-fill-available;
 }
 
 il {

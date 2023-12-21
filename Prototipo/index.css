@@ -1,14 +1,9 @@
-@font-face {
-    font-family: 'Raleway';
-    src: url('/src/Raleway-Black.ttf');
-}
-
 form {
     padding-right: 30px;
     padding-left: 30px;
     padding-top: 50px;
     padding-bottom: 50px;
-    width: 300px;
+    width: 350px;
     border-radius: 70px;
     background: #FFF4F4;
 }
