@@ -28,19 +28,9 @@ label {
 
 body {
     margin: 0;
-    background: linear-gradient(90deg, #0032B9 0%, #0067EC 50%,#29DBE2 100%);
+    background: linear-gradient(180deg, #495766, #4b5764);
     background-size: 200% 100%;
-    animation: animated-gradient 5s infinite alternate;
     height: 100vh;
-}
-
-@keyframes animated-gradient {
-    0% {
-        background-position-x: 0%;
-      }
-    100% {
-        background-position-x: 100%;
-    }
 }
 
 .centralize {

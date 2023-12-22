@@ -37,6 +37,9 @@ function catchLoginErrorMessage(errorMessage) {
     else if (errorMessage.code == "auth/invalid-email") {
         return "E-mail inválido."
     }
+    else if (errorMessage.code == "auth/internal-error") {
+        return "Senha é obrigatória."
+    }
 
     return errorMessage.message
 }

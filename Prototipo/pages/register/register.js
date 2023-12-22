@@ -1,8 +1,3 @@
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) window.location.href = "../home/home.html"
-})
-
-
 const elements = {
     form: () => document.getElementById('form'),
     email: () => document.getElementById('email').value,
@@ -13,6 +8,13 @@ const elements = {
     registerBtn: () => document.getElementById('register'),
     loginBtn: () => document.getElementById('login'),
 }
+
+
+// Gambiarra para evitar chamadas desnecessarias ao BD
+let emailAlredyInUse = false
+let users
+getAllUsersSigned().then(usersArray => users = usersArray)
+//
 
 
 function returnToLogin() {
@@ -28,14 +30,8 @@ function showFeedback() {
 
 function catchRegisterErrorMessage(errorMessage) {
     
-    if (errorMessage.code == "auth/weak-password") {
-        return "Senha deve ter pelo menos 6 caracteres."
-    }
-    else if (errorMessage.code == "auth/email-already-in-use") {
-        return "E-mail já cadastrado."
-    }
-    else if (errorMessage.code == "undefined") {
-        return "Os campos são obrigatórios."
+    if (errorMessage.code == "undefined") {
+        return "Erro ao solicitar acesso."
     }
 
     return errorMessage.message
@@ -62,6 +58,7 @@ function validateRegisterFields() {
     const confirmPassword = elements.confirmPassword()
     const email = elements.email()
 
+
     if (!(isEmailValid(email))) {
         return false
     }
@@ -71,10 +68,49 @@ function validateRegisterFields() {
     else if (!confirmPassword) {
         return false
     }
+    else if (password.length < 6) {
+        return false
+    }
     else if (confirmPassword != password) {
         return false
     }
+    else if (matchEmail(users)) {
+        emailAlredyInUse = true
+        return false
+    }
+
     return true
+}
+
+
+function matchEmail(users) {
+    const email = elements.email()
+    let control = false
+
+    users.forEach(user => {
+        if (user.email == email) {
+            control = true
+        }
+    })
+
+    return control
+}
+
+
+function getAllUsersSigned() {
+    showLoading()
+    return firebase.firestore()
+        .collection('users')
+        .get()
+        .then(snapshot => {
+            hideLoading()
+            const users = snapshot.docs.map(doc => doc.data())
+            return users
+        })
+        .catch(error => {
+            hideLoading()
+            console.log("Barragem de segurança:" + error)
+        })
 }
 
 
@@ -84,6 +120,7 @@ function getUserRegisterErrorMessage() {
     const confirmPassword = elements.confirmPassword()
     const email = elements.email()
 
+
     if (!isEmailValid(email)) {
         return "E-mail inválido."
     }
@@ -92,6 +129,12 @@ function getUserRegisterErrorMessage() {
     }
     else if (!confirmPassword) {
         return "Confirmar senha é obrigatório."
+    }
+    else if (password.length < 6) {
+        return "Senha deve ter pelo menos 6 caracteres."
+    }
+    else if (emailAlredyInUse == true) {
+        return "E-mail já está em uso."
     }
     else if (confirmPassword != password) {
         return "As senhas são diferentes."
@@ -107,18 +150,44 @@ function showUserRegisterErrorBox(errorMessage) {
 }
 
 
-function sendRegisterRequest() {
-    // Tratar erros e arrumar alguma forma de enviar uma solicitação ao Admin
-    // Se tudo correr bem dar feedback.
-
+function createUser() {
     const password = elements.password()
     const email = elements.email()
 
+    return {
+        "email": email,
+        "password": password
+    }
+}
+
+
+function sendRegisterRequest() {
+    // Tratar erros e arrumar alguma forma de enviar uma solicitação ao Admin
+    // Se tudo correr bem dar feedback.
+ 
     if(!validateRegisterFields()) {
         errorMessage = getUserRegisterErrorMessage()
         showUserRegisterErrorBox(errorMessage)
     }
     else {
+        
+        const userRequested = createUser()
+
+        showLoading()
+        firebase.firestore().collection("usersRequested")
+            .add(userRequested)
+            .then(() => {
+                hideLoading()
+                showFeedback()
+            })
+            .catch(error => {
+                hideLoading()
+                console.log(error)
+                showFirebaseRegisterErrorBox(error)
+            })
+        
+        
+        /*
         showLoading();
         firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
             hideLoading();
@@ -126,6 +195,7 @@ function sendRegisterRequest() {
         }).catch(error => {
             hideLoading();
             showFirebaseRegisterErrorBox(error);
-        })
+        }) 
+        */
     }
 }

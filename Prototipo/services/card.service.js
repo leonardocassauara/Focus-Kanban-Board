@@ -35,5 +35,5 @@ const cardService = {
         .collection("kanban")
         .doc(getCardUid())
         .update(card)
-    }
+    },
 }

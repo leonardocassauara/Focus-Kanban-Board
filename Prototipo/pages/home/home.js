@@ -56,8 +56,29 @@ function isNewCard(card) {
 
 
 function isColumnChanged(card) {
+    console.log('isColumnChanged ' + card)
     if (card.column != document.getElementById(card.id).dataset.column) return true
     return false
+}
+
+
+function isDropColumnChanged(cardHTML) {
+    if (cardHTML.dataset.column != cardHTML.parentNode.parentNode.id) return true
+    return false
+}
+
+
+function saveDropChanges(cardHTML) {
+    if (isDropColumnChanged(cardHTML)) {
+        // Coluna mudou, verificar em qual linha o card esta e salvar no bd
+        firebase.firestore().collection('kanban').doc(cardHTML.id).update({
+            column: cardHTML.parentNode.parentNode.id
+        })
+        cardHTML.dataset.column = cardHTML.parentNode.parentNode.id
+    }
+    else {
+        // Se a coluna nao mudou, verificar se a linha mudou
+    }
 }
 
 
@@ -70,15 +91,15 @@ function createCard(card) {
         li.classList.add("card-is-dragging")
     })
     li.addEventListener("dragend", () => {
-        li.classList.remove("card-is-dragging")
+        li.classList.remove("card-is-dragging");
+        saveDropChanges(li)
     })
 
 
     li.id = card.uid
-
     li.classList.add("card")
     li.innerText = card.title
-    li.dataset.coluna = 'backlog'
+    li.dataset.column = 'backlog'
     li.addEventListener('click', () => {
         window.location.href = "../cardStudio/cardStudio.html?uid=" + card.uid
     })
