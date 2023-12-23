@@ -56,8 +56,7 @@ function isNewCard(card) {
 
 
 function isColumnChanged(card) {
-    console.log('isColumnChanged ' + card)
-    if (card.column != document.getElementById(card.id).dataset.column) return true
+    if (card.column != document.getElementById(card.uid).dataset.column) return true
     return false
 }
 
@@ -120,6 +119,14 @@ function createCard(card) {
 
 
 function addCardsToScreen(cards) {
+    const cardsInScreen = document.querySelectorAll(".card")
+    
+    if (cardsInScreen.length) {
+        cardsInScreen.forEach(card => {
+            card.remove()
+        })
+    }
+    
     cards.forEach(card => {
         
         if (isNewCard(card)) {
@@ -128,15 +135,19 @@ function addCardsToScreen(cards) {
         else {
             if (isColumnChanged(card)) {
                 // Atualizar posição do card
-                document.getElementById(card.uid).remove()
+                removeCardFromScreen(card)
                 createCard(card)
             }
         }  
-
     })  
 }
 
 
 function openCardStudio() {
     window.location.href = "../cardStudio/cardStudio.html"
+}
+
+
+function removeCardFromScreen(card) {
+    document.getElementById(card.uid).remove()
 }
