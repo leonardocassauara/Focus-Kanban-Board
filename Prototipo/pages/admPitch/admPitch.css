@@ -43,3 +43,9 @@ div button {
     transition: 0.7s;
     background: #ec454b;
 }
+
+.clearHome {
+    background: transparent;
+    border: none;
+    color: #FFF4F4;
+}

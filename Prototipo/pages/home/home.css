@@ -1,22 +1,9 @@
-header {
-    display: flex;
-    justify-content: right;
-    gap: 0px;
-    padding: 4px;
-}
-
-
 header img {
     width: 8%;
     display: none;
     cursor: pointer;
 }
 
-header button:hover {
-    transition: 0.7s;
-    background: #89D5F5;
-    color: #2B2B2B;
-}
 
 button {
     margin-bottom: 0px;

@@ -160,3 +160,20 @@ il {
     src: url('src/ClearSans-Regular.ttf');
     font-style: normal;
 }
+
+header button:hover {
+    transition: 0.7s;
+    background: #89D5F5;
+    color: #2B2B2B;
+}
+
+header {
+    display: flex;
+    justify-content: right;
+    gap: 0px;
+    padding: 4px;
+}
+
+header button {
+    width: auto;
+}
