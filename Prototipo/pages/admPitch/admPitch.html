@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Master Pitch</title>
+    <link rel="icon" href="../../src/icone-focus.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../../src/icone-focus.png" type="image/x-icon">
+</head>
+<body class="centralize">
+    <div class="content-container">
+
+        <div id="usersRequest" class="users-container">
+            <!-- Solicitação de cadastro fake -->
+            <div class="title">Solicitações de Registro</div>
+            <hr>
+            <ul id="ulUsersRequest"></ul>
+            <il>
+                <div class="item-title">any@email.com</div>
+                <div>
+                    <button type="button" class="accept">ACEITAR</button>
+                    <button type="button" class="decline">RECUSAR</button>
+                </div>
+            </il>
+            <!-- Solicitação de cadastro fake -->
+            <il>
+                <div class="item-title">emailLegal@email.com</div>
+                <div>
+                    <button type="button" class="accept">ACEITAR</button>
+                    <button type="button" class="decline">RECUSAR</button>
+                </div>
+            </il>
+        </div>
+
+        <div id="usersAccepted" class="users-container">
+            <div class="title">Usuários Cadastrados</div>
+            <hr>
+            <ul id="ulUsersAccepted"></ul>
+            <!-- Usuário cadastrado fake -->
+            <il>
+                <div class="item-title">usuario@email.com</div>
+                <div>
+                    <button type="button" class="decline">REMOVER</button>
+                </div>
+            </il>
+        </div>
+
+    </div>
+</body>
+<link rel="stylesheet" href="admPitch.css">
+<link rel="stylesheet" href="../../global.css">
+<script src="../../loading.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+<script src="../../firabaseInit.js"></script>
+<script src="../../authGuard.js"></script>
+<script src="admPitch.js"></script>
+</html>

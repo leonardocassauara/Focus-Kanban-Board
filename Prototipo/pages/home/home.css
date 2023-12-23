@@ -1,10 +1,15 @@
 header {
-    text-align: right;
+    display: flex;
+    justify-content: right;
+    gap: 0px;
     padding: 4px;
 }
 
-header button {
-    width: auto;
+
+header img {
+    width: 8%;
+    display: none;
+    cursor: pointer;
 }
 
 header button:hover {
