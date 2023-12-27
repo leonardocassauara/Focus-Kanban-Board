@@ -10,11 +10,18 @@ const elements = {
 }
 
 
-// Gambiarra para evitar chamadas desnecessarias ao BD
-let emailAlredyInUse = false
-let users
-getAllUsersSigned().then(usersArray => users = usersArray)
-//
+
+let emailsAllowed
+registerService.getAllUsersAllowed()
+    .then(emails => {
+        hideLoading()
+        emailsAllowed = emails
+    })
+    .catch(error => {
+        hideLoading()
+        console.log(error)
+        alert("Erro ao recuperar e-mails permitidos.")
+    })
 
 
 function returnToLogin() {
@@ -29,9 +36,14 @@ function showFeedback() {
 
 
 function catchRegisterErrorMessage(errorMessage) {
-    
     if (errorMessage.code == "undefined") {
         return "Erro ao solicitar acesso."
+    }
+    else if (errorMessage.code == "auth/weak-password") {
+        return "Senha deve ter pelo menos 6 caracteres."
+    }
+    else if (errorMessage.code == "auth/email-already-in-use") {
+        return "E-mail já em uso."
     }
 
     return errorMessage.message
@@ -74,8 +86,7 @@ function validateRegisterFields() {
     else if (confirmPassword != password) {
         return false
     }
-    else if (matchEmail(users)) {
-        emailAlredyInUse = true
+    else if (!matchEmail(emailsAllowed)) {
         return false
     }
 
@@ -83,34 +94,17 @@ function validateRegisterFields() {
 }
 
 
-function matchEmail(users) {
+function matchEmail(emailsAllowed) {
     const email = elements.email()
     let control = false
 
-    users.forEach(user => {
-        if (user.email == email) {
+    emailsAllowed.forEach(emailAllowed => {
+        if (emailAllowed.email == email) {
             control = true
         }
     })
 
     return control
-}
-
-
-function getAllUsersSigned() {
-    showLoading()
-    return firebase.firestore()
-        .collection('users')
-        .get()
-        .then(snapshot => {
-            hideLoading()
-            const users = snapshot.docs.map(doc => doc.data())
-            return users
-        })
-        .catch(error => {
-            hideLoading()
-            console.log("Barragem de segurança:" + error)
-        })
 }
 
 
@@ -133,11 +127,11 @@ function getUserRegisterErrorMessage() {
     else if (password.length < 6) {
         return "Senha deve ter pelo menos 6 caracteres."
     }
-    else if (emailAlredyInUse == true) {
-        return "E-mail já está em uso."
-    }
     else if (confirmPassword != password) {
         return "As senhas são diferentes."
+    }
+    else if (!matchEmail(emailsAllowed)) {
+        return "E-mail ainda não permitido."
     }
 }
 
@@ -150,52 +144,35 @@ function showUserRegisterErrorBox(errorMessage) {
 }
 
 
-function createUser() {
-    const password = elements.password()
-    const email = elements.email()
-
-    return {
-        "email": email,
-        "password": password
-    }
-}
-
-
-function sendRegisterRequest() {
-    // Tratar erros e arrumar alguma forma de enviar uma solicitação ao Admin
-    // Se tudo correr bem dar feedback.
- 
-    if(!validateRegisterFields()) {
-        errorMessage = getUserRegisterErrorMessage()
+function registerUser() {
+    
+    if (!validateRegisterFields()) {
+        const errorMessage = getUserRegisterErrorMessage()
         showUserRegisterErrorBox(errorMessage)
     }
     else {
-        
-        const userRequested = createUser()
-
-        showLoading()
-        firebase.firestore().collection("usersRequested")
-            .add(userRequested)
-            .then(() => {
-                hideLoading()
-                showFeedback()
-            })
-            .catch(error => {
-                hideLoading()
-                console.log(error)
-                showFirebaseRegisterErrorBox(error)
-            })
-        
-        
-        /*
-        showLoading();
-        firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-            hideLoading();
-            showFeedback();
-        }).catch(error => {
-            hideLoading();
-            showFirebaseRegisterErrorBox(error);
-        }) 
-        */
+        if (matchEmail(emailsAllowed)) {
+            showLoading()
+            firebase.auth()
+                .createUserWithEmailAndPassword(elements.email(), elements.password())
+                .then(userCredentials => {
+                    hideLoading()
+                    showFeedback()
+                    showLoading()
+                    registerService.addUser(elements.email(), userCredentials.user.uid)
+                        .then(() => {
+                            hideLoading()
+                        })
+                        .catch(error => {
+                            hideLoading()
+                            console.log(error)
+                            alert("Erro ao criar novo cadastro.")
+                        })
+                })
+                .catch(error => {
+                    hideLoading()
+                    showFirebaseRegisterErrorBox(error)
+                })
+        }
     }
 }

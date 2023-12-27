@@ -23,28 +23,14 @@ firebase.firestore().collection('kanban').onSnapshot(snapshot => {
 
 function logout() {
     showLoading()
-    firebase.auth().signOut().then(() => {
+    generalService.logout().then(() => {
         hideLoading()
         window.location.href = "../../index.html"
     }).catch(error => {
         hideLoading()
-        alert("Erro, tente novamente.")
+        console.log(error)
+        alert("Erro ao deslogar.")
     })
-}
-
-
-function findCards() {
-    showLoading()
-    cardService.find()
-        .then(cards => {
-            hideLoading()
-            addCardsToScreen(cards)
-        })
-        .catch(error => {
-            hideLoading()
-            console.log(error)
-            alert('Erro ao recuperar tarefas')
-        })
 }
 
 
@@ -62,6 +48,7 @@ function isColumnChanged(card) {
 
 
 function isDropColumnChanged(cardHTML) {
+    console.log(cardHTML.parentNode.parentNode.id == cardHTML.dataset.column)
     if (cardHTML.dataset.column != cardHTML.parentNode.parentNode.id) return true
     return false
 }
@@ -69,11 +56,15 @@ function isDropColumnChanged(cardHTML) {
 
 function saveDropChanges(cardHTML) {
     if (isDropColumnChanged(cardHTML)) {
-        // Coluna mudou, verificar em qual linha o card esta e salvar no bd
-        firebase.firestore().collection('kanban').doc(cardHTML.id).update({
-            column: cardHTML.parentNode.parentNode.id
+        // Coluna mudou, salvar mudança de coluna
+        cardService.updateColumn(cardHTML)
+        .catch(error => {
+            alert("Erro ao salvar alterações no quadro.")
+            console.log(error)
         })
         cardHTML.dataset.column = cardHTML.parentNode.parentNode.id
+
+        // Verificar em qual linha o card foi colocado
     }
     else {
         // Se a coluna nao mudou, verificar se a linha mudou
@@ -98,7 +89,7 @@ function createCard(card) {
     li.id = card.uid
     li.classList.add("card")
     li.innerText = card.title
-    li.dataset.column = 'backlog'
+    li.dataset.column = card.column
     li.addEventListener('click', () => {
         window.location.href = "../cardStudio/cardStudio.html?uid=" + card.uid
     })

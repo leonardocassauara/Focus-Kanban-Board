@@ -22,9 +22,6 @@
             <div><label for="password">Senha</label></div>
             <input class="form-field" name="password" id="password" type="password" placeholder="Senha" required>
         </div>
-        
-        <div class="error" id="loginError"></div>
-        <div class="feedback" id="recoverPasswordFeedback">Email de recuperação enviado.</div>
 
         <button class="clear" id="recover" type="button" onClick="recoverPassword()">RECUPERAR SENHA</button>
         <button class="solid" id="login" type="button" onClick="loginUser()">ENTRAR</button>
@@ -35,6 +32,7 @@
 </body>
 <link rel="stylesheet" href="index.css">
 <link rel="stylesheet" href="global.css">
+<script src="adjust.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
 <script src="firabaseInit.js"></script>

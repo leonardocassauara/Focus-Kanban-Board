@@ -1,16 +1,5 @@
 const cardService = {
-    find: () => {
-        return firebase.firestore()
-        .collection('kanban')
-        .get()
-        .then(snapshot => {
-            return cards = snapshot.docs.map(doc => ({
-                ...doc.data(),
-                uid: doc.id,
-            }))
-        })
-    },
-    findByUid: uid => {
+    getCardByUid: uid => {
         return firebase.firestore()
         .collection("kanban")
         .doc(uid)
@@ -35,5 +24,12 @@ const cardService = {
         .collection("kanban")
         .doc(getCardUid())
         .update(card)
+    },
+    updateColumn: cardHTML => {
+        return firebase.firestore()
+        .collection("kanban")
+        .doc(cardHTML.id).update({
+            column: cardHTML.parentNode.parentNode.id
+        })
     },
 }

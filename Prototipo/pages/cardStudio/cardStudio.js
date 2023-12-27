@@ -24,7 +24,7 @@ else {
 
 function findCardByUid(uid) {
     showLoading()
-    cardService.findByUid(uid)
+    cardService.getCardByUid(uid)
         .then(card => {
             hideLoading()
             if (card) {

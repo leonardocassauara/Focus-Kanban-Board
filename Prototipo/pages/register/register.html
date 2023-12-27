@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="../../src/icone-focus.png" type="image/x-icon">
 </head>
 <body class="centralize">
-    <form>
+    <form id="form">
 
         <div class="input-field">
             <input class="form-field" name="email" id="email" type="email" placeholder="E-mail">
@@ -23,17 +23,19 @@
         </div>
 
         <div class="error" id="registerError"></div>
-        <div class="feedback" id="registerFeedback">Solicitação de cadastro enviada.</div>
+        <div class="feedback" id="registerFeedback">Cadastro Efetivado.</div>
 
-        <button class="solid" id="register" type="button" onClick="sendRegisterRequest()">REGISTRAR</button>
+        <button class="solid" id="register" type="button" onClick="registerUser()">REGISTRAR</button>
         <button class="outline" id="login" type="button" onClick="returnToLogin()">ENTRAR</button>
 
     </form>
 </body>
+<script src="../../adjust.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
 <script src="../../firabaseInit.js"></script>
+<script src="../../services/register.service.js"></script>
 <link rel="stylesheet" href="register.css">
 <link rel="stylesheet" href="../../global.css">
 <script src="../../loading.js"></script>

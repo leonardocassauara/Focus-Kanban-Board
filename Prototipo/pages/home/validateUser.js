@@ -15,13 +15,12 @@ function validateWebMaster(uid) {
             showAdmPitchIcon(user)
         })
         .catch(error => {
-            console.log(error)
         })
 }
 
 
 function isWebMaster(user) { 
-    if (user.adm == true) return true
+    if (user.adm) return true
     return false
 }
 

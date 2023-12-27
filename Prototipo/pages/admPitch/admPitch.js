@@ -1,171 +1,173 @@
-//  CRUD para mostrar solicitações de cadastro
-//  CRUD para mostrar usuários cadastrados
-
-
 const elements = {
-    requestColumn: () => document.getElementById("usersRequest"),
+    alEmailsColumn: () => document.getElementById("emailsAllowed"),
     usersColumn: () => document.getElementById("usersAccepted"),
-    ulRequest: () => document.getElementById("ulUsersRequest"),
-    ulUsers: () => document.getElementById("ulUsersAccepted")
+    ulAllowed: () => document.getElementById("ulAllowed"),
+    ulUsers: () => document.getElementById("ulUsersAccepted"),
+    emailError: () => document.getElementById('emailError'),
+    emailFeedback: () => document.getElementById("emailFeedback"),
 }
 
-findRequests()
+
+showLoading()
+firebase.auth().onAuthStateChanged(user => {
+    hideLoading()
+    validateWebMaster(user.uid)
+})
+
+
 findUsers()
 
 
-function logout() {
+function findEmailsAllowed(users) {
     showLoading()
-    firebase.auth().signOut().then(() => {
+    admService.getEmailsAllowed()
+    .then(emailsJSON => {
         hideLoading()
-        window.location.href = "../../index.html"
-    }).catch(error => {
-        hideLoading()
-        alert("Erro, tente novamente.")
-    })
-}
-
-
-function findRequests() {
-    showLoading()
-    firebase.firestore()
-        .collection("usersRequested")
-        .get()
-        .then(snapshot => {
-            hideLoading()
-            const requests = snapshot.docs.map(doc => ({
-                ...doc.data(),
-                uid: doc.id // Id da requisição
-            }))
-            addRequestsToScreen(requests)
-        })
-        .catch(error => {
-            hideLoading()
-            console.log(error)
-            alert("Erro ao recuperar solicitações de cadastro.")
-        })
-}
-
-
-function addRequestsToScreen(requestsJSON) {
-    // requestJSON.email
-    // requestJSON.password
-    // requestJSON.uid
-
-
-
-    requestsJSON.forEach(request => {
-        createRequestCard(request)
-    })
-}
-
-
-function createRequestCard(request) {
-    const liElement = document.createElement('il');
-    liElement.id = request.uid
-
-
-    const titleDiv = document.createElement('div');
-    titleDiv.className = 'item-title';
-    titleDiv.innerText = request.email
-
-    liElement.appendChild(titleDiv);
-
-
-    const buttonContainerDiv = document.createElement('div');
-
-    const acceptButton = document.createElement('button');
-    acceptButton.className = 'accept';
-    acceptButton.type = "button"
-    acceptButton.innerText = "ACEITAR"
-    acceptButton.addEventListener("click", () => {
-        // Adicionar usuário ao banco de dado users e fazer o registro com método do firebase
-        addUserInDBFromRequest(request)
-
-        // Remover entidade do banco de dado usersRequested
-    })
-    
-
-    const declineButton = document.createElement('button');
-    declineButton.className = 'decline';
-    declineButton.type = "button"
-    declineButton.innerText = "RECUSAR"
-    declineButton.addEventListener("click", () => {
-        // Remover entidade do banco de dado usersRequested
-        if(areSure()) removeRequestFromDB(liElement.id)
-    })
-
-    buttonContainerDiv.appendChild(acceptButton);
-    buttonContainerDiv.appendChild(declineButton);
-
-
-    liElement.appendChild(buttonContainerDiv);
-    elements.ulRequest().appendChild(liElement)
-}
-
-
-function addUserInDBFromRequest(requestJSON) {
-    showLoading()
-    
-    const newUser = {
-        email: requestJSON.email
-    }
-
-    firebase.auth().createUserWithEmailAndPassword(requestJSON.email, requestJSON.password)
-    .then(userCredentials => {
         
-        firebase.firestore()
-        .collection('users')
-        .doc(userCredentials.user.uid)
-        .set(newUser)
-        .then(() => {
-            hideLoading()
-            removeRequestFromDB(requestJSON.uid)
-            createUserCard(userCredentials.user)
-        })
-        .catch(error => {
-            hideLoading()
-            console.log(error)
-            alert('Erro ao adicionar usuário cadastrado.')
-        })
+        const filteredEmails = filterEmails(users, emailsJSON)
+
+        addEmailsAllowedToScreen(filteredEmails) 
     })
     .catch(error => {
         hideLoading()
         console.log(error)
-        alert("Erro ao criar novo usuário.")
+        alert("Erro ao recuperar usuários permitidos.")
     })
 }
 
 
-function removeRequestFromDB(uid) {
-    showLoading()
-    firebase.firestore()
-        .collection("usersRequested")
-        .doc(uid)
-        .delete()
+function filterEmails(users, allowed) {
+    const usersFormat = users.map(user => user.email)
+    let filteredEmails = allowed.filter (object => !usersFormat.includes(object.email))
+    return filteredEmails
+}
+
+
+function addEmail() {
+    const emailToAdd = document.getElementById("email").value;
+    document.getElementById("email").value = ""
+
+
+    if (isValidEmail(emailToAdd)) {
+        admService.addEmailAllowed( { email: emailToAdd } )
+        .then(docRef => {
+            findUsers(); 
+            toggleFeedbackMessage()
+        })
+        .catch(error => {
+            console.error("Erro ao adicionar e-mail:", error);
+            alert("Erro ao adicionar e-mail. Por favor, tente novamente.");
+        });
+    }
+    else toggleErrorMessage(); // TODO: Substituir com uma caixa erro
+}
+
+
+function isValidEmail(email) {
+    const regex = /@.*\.com/;
+    return regex.test(email);
+}
+
+
+function addEmailsAllowedToScreen(emailsJSON) {
+    
+    emailsJSON.forEach(emailData => {
+
+        if (!document.getElementById(emailData.uid)) {
+
+            createEmailAllowed(emailData)
+        }
+    });
+}
+
+
+function createEmailAllowed(emailData) {
+    const liElement = document.createElement('li');
+    liElement.id = emailData.uid
+            
+    const div = document.createElement('div')
+    div.innerText = emailData.email
+    div.className = 'item-title'
+
+    const trashIcon = document.createElement('i');
+    trashIcon.classList.add('fa');
+    trashIcon.classList.add('fa-trash')
+    trashIcon.style.cursor = 'pointer'; 
+    trashIcon.onclick = () => removeEmailFromCollection(emailData.uid);
+
+    liElement.appendChild(div)
+    liElement.appendChild(trashIcon);
+
+    elements.ulAllowed().appendChild(liElement);
+}
+
+
+function removeEmailFromCollection(docId) {
+    if (areSure()) {
+        showLoading()
+        admService.removeEmailAllowed(docId)
         .then(() => {
             hideLoading()
-            document.getElementById(uid).remove()
+            document.getElementById(docId).remove()
+            findUsers();
         })
         .catch(error => {
             hideLoading()
             console.log(error)
-            alert("Erro ao remover usuário da solicitação.")
+            alert("Erro ao remover usuário permitido.")
+        });
+    }
+}
+
+
+function areSure() {
+    return confirm("Tem certeza que deseja remover este e-mail?");
+}
+
+
+function validateWebMaster(uid) {
+    admService.getUserByUid(uid)
+        .then(user => {
+            if (!isWebMaster(user)) window.location.href = "../home/home.html"
         })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+
+function isWebMaster(user) { 
+    if (user.adm == true) return true
+    return false
+}
+
+
+function logout() {
+    showLoading()
+    generalService.logout().then(() => {
+        hideLoading()
+        window.location.href = "../../index.html"
+    }).catch(error => {
+        hideLoading()
+        console.log(error)
+        alert("Erro ao deslogar.")
+    })
+}
+
+
+function voltar() {
+    window.location.href = "../home/home.html";
 }
 
 
 function findUsers() {
     showLoading()
-    firebase.firestore()
-        .collection('users')
-        .get()
-        .then(snapshot => {
+    admService.getUsers()
+        .then(usersJSON => {
             hideLoading()
-            const users = snapshot.docs.map(doc => ({
-                ...doc.data(),
-                uid: doc.id // Id do usuário no DB e no Auth
-            }))
-            addUsersToScreen(users)
+            addUsersToScreen(usersJSON)
+
+            findEmailsAllowed(usersJSON)
         })
         .catch(error => {
             hideLoading()
@@ -180,19 +182,16 @@ function addUsersToScreen(usersJSON) {
     // usersJSON.adm (se tiver)
 
     usersJSON.forEach(user => {
-        createUserCard(user)
+        if (!document.getElementById(user.uid)) createUserCard(user)
     })
-}
 
-
-function areSure() {
-    return confirm("Tem certeza?")
 }
 
 
 function createUserCard(user) {
-    const liElement = document.createElement('il');
+    const liElement = document.createElement('li');
     liElement.id = user.uid
+    liElement.name = user.email 
 
 
     const titleDiv = document.createElement('div');
@@ -204,46 +203,13 @@ function createUserCard(user) {
 }
 
 
-/* Firebase requere que o próprio usuário exclua seu cadastro, ou que o cadastro seja excluido pelo adm na hud do firebase
-
-    const buttonContainerDiv = document.createElement('div');
-
-
-    const declineButton = document.createElement('button');
-    declineButton.className = 'decline';
-    declineButton.type = "button"
-    declineButton.innerText = "REMOVER"
-    declineButton.addEventListener("click", () => {
-        // Remover entidade do banco de dado usersRequested
-        if (areSure()) removeUserFromDB(liElement.id)
-    })
-
-    buttonContainerDiv.appendChild(declineButton);
-
-    if (user.adm) declineButton.setAttribute("disabled", "true")
-    liElement.appendChild(buttonContainerDiv);
-    
-
-    elements.ulUsers().appendChild(liElement)
+function toggleErrorMessage() {
+    elements.emailError().style.display = "block"
+    elements.emailFeedback().style.display = "none"
 }
 
 
-function removeUserFromDB(uid) {
-    console.log(uid)
-    showLoading()
-    firebase.firestore()
-        .collection("users")
-        .doc(uid)
-        .delete()
-        .then(() => {
-            hideLoading()
-            document.getElementById(uid).remove()
-        })
-        .catch(error => {
-            hideLoading()
-            console.log(error)
-            alert("Erro ao remover usuário.")
-        })
-
+function toggleFeedbackMessage() {
+    elements.emailFeedback().style.display = "block"
+    elements.emailError().style.display = "none"
 }
-*/
