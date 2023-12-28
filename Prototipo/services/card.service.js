@@ -32,4 +32,13 @@ const cardService = {
             column: cardHTML.parentNode.parentNode.id
         })
     },
+    createBatch: () => {
+        return firebase.firestore().batch()
+    },
+    addChangesToBatch: (batch, card) => {
+        return batch.update(firebase.firestore().collection("kanban").doc(card.id), { order: card.dataset.order })
+    },
+    commitBatch: batch => {
+        return batch.commit()
+    },
 }

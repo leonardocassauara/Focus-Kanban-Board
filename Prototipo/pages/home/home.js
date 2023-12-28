@@ -12,13 +12,16 @@ const elements = {
 }
 
 
-firebase.firestore().collection('kanban').onSnapshot(snapshot => {
-    const cards = snapshot.docs.map (doc => ({
-        ...doc.data(),
-        uid: doc.id
-    }))
-    addCardsToScreen(cards)
-})
+firebase.firestore()
+    .collection('kanban')
+    .orderBy('order')
+    .onSnapshot(snapshot => {
+        const cards = snapshot.docs.map (doc => ({
+            ...doc.data(),
+            uid: doc.id
+        }))
+        addCardsToScreen(cards)
+    })
     
 
 function logout() {
@@ -48,27 +51,80 @@ function isColumnChanged(card) {
 
 
 function isDropColumnChanged(cardHTML) {
-    console.log(cardHTML.parentNode.parentNode.id == cardHTML.dataset.column)
     if (cardHTML.dataset.column != cardHTML.parentNode.parentNode.id) return true
     return false
 }
 
 
+function updateOrderInDB(column) {
+    
+    updateOrderHTML(column)
+
+    let cards = getAllCardsInColumn(column)
+    cards = Array.from(cards)
+
+    const batch = cardService.createBatch()
+
+    cards.forEach(card => {
+        cardService.addChangesToBatch(batch, card)
+    })
+
+    cardService.commitBatch(batch)
+        .then(() => {
+            console.log("Alterações salvas.")
+        })
+        .catch(error => {
+            console.log(error)
+            alert("Erro ao salvar linhas.")
+        })
+}
+
+
 function saveDropChanges(cardHTML) {
     if (isDropColumnChanged(cardHTML)) {
-        // Coluna mudou, salvar mudança de coluna
         cardService.updateColumn(cardHTML)
         .catch(error => {
             alert("Erro ao salvar alterações no quadro.")
             console.log(error)
         })
+        
+        updateOrderInDB(cardHTML.dataset.column)
         cardHTML.dataset.column = cardHTML.parentNode.parentNode.id
-
-        // Verificar em qual linha o card foi colocado
+        updateOrderInDB(cardHTML.dataset.column)  
     }
     else {
-        // Se a coluna nao mudou, verificar se a linha mudou
+        if (isDropLineChanged(cardHTML)) {
+            updateOrderInDB(cardHTML.dataset.column)
+        }
     }
+}
+
+
+function getAllCardsInColumn(column) {
+    let cards = document.querySelectorAll('li[data-column='+ column +']')
+    return cards
+}
+
+
+function updateOrderHTML(column) {
+    let cards = getAllCardsInColumn(column)
+
+    cards = Array.from(cards)
+
+    cards.map((card, index) => {
+        card.dataset.order = index
+    })
+}
+
+
+function isDropLineChanged(cardHTML) {
+    const unUpdatedOrder = cardHTML.dataset.order
+    
+    updateOrderHTML(cardHTML.dataset.column)
+    const updatedOrder = cardHTML.dataset.order
+
+    if (updatedOrder != unUpdatedOrder) return true
+    return false
 }
 
 
@@ -82,6 +138,7 @@ function createCard(card) {
     })
     li.addEventListener("dragend", () => {
         li.classList.remove("card-is-dragging");
+        //updateOrder(li)
         saveDropChanges(li)
     })
 
@@ -90,6 +147,7 @@ function createCard(card) {
     li.classList.add("card")
     li.innerText = card.title
     li.dataset.column = card.column
+    li.dataset.order = card.order
     li.addEventListener('click', () => {
         window.location.href = "../cardStudio/cardStudio.html?uid=" + card.uid
     })
@@ -125,12 +183,12 @@ function addCardsToScreen(cards) {
         }
         else {
             if (isColumnChanged(card)) {
-                // Atualizar posição do card
+
                 removeCardFromScreen(card)
                 createCard(card)
             }
         }  
-    })  
+    })
 }
 
 

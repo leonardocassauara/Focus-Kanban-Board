@@ -117,7 +117,6 @@ function save(card) {
             console.log(error)
             alert("Erro ao salvar tarefa.")
         })
-    console.log("oi")
 }
 
 
@@ -130,6 +129,7 @@ function createCard() {
         responsable: elements.cardResp().value,
         limitDate: elements.limitDate().value,
         sector: elements.sectorField().value,
+        order: "999",
     }
 }
 
