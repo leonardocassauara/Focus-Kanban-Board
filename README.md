@@ -4,13 +4,13 @@
 </div>
 <hr>
 
-Quadro Kanban para gerenciar atividades empresariais. Embuído com **sistema de autenticação personalizado, página do webmaster, responsividade e CRUD em tempo-real** com banco de dados e website hospedados na Firebase. 
+Quadro Kanban para gerenciar atividades empresariais. Embuído com **sistema de autenticação personalizado, página do webmaster, e CRUD em tempo-real** com banco de dados e website hospedados na Firebase. 
 
 <img align="center" width="auto" src="https://i.imgur.com/LpTuJoV.png"></img>
 
 <img align="center" width="auto" src="https://i.imgur.com/6mgeIwD.png"></img>
 
-<img align="center" width="auto" src="https://i.imgur.com/09Cpg9r.png"></img>
+<img align="center" width="auto" src="https://i.imgur.com/B3RLOo0.png"></img>
 
 <img align="center" width="auto" src="https://i.imgur.com/b6xJEwG.png"></img>
 
