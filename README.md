@@ -1,6 +1,6 @@
 <div style="font-size: 24px;">
     <img align="center" width="6%" src="https://i.imgur.com/9Abj0hl.png" style="padding-bottom: 5px;">
-    <span href='hospedagem'>Sistema de Gerenciamento de Atividades</span>
+    <span href='https://focus-kanban-board.web.app'>Sistema de Gerenciamento de Atividades</span>
 </div>
 <hr>
 
@@ -23,7 +23,7 @@ Quadro Kanban para gerenciar atividades empresariais. Embuído com **sistema de 
 <hr>
 
 O projeto encontra-se estável para produção e pode ser acessado pelo 
-[link](url).
+[link](https://focus-kanban-board.web.app).
 <br>
 <br>
 
