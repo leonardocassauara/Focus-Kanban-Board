@@ -90,9 +90,10 @@ function createEmailAllowed(emailData) {
     div.className = 'item-title'
 
     const trashIcon = document.createElement('i');
-    trashIcon.classList.add('fa');
+    trashIcon.classList.add('fas');
     trashIcon.classList.add('fa-trash')
-    trashIcon.style.cursor = 'pointer'; 
+    trashIcon.style.cursor = 'pointer';
+    trashIcon.style.paddingTop = '5px' 
     trashIcon.onclick = () => removeEmailFromCollection(emailData.uid);
 
     liElement.appendChild(div)

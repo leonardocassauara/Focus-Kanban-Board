@@ -40,7 +40,7 @@ div ul {
     min-height: 10px;
 }
 
-div button {
+form div button {
     width: auto;
     border-radius: 10px;
     margin-left: 5px;

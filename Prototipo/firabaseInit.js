@@ -1,12 +1,12 @@
 (function() {
     const firebaseConfig = {
-        apiKey: "AIzaSyA3HAkvBPsgn1L1UNr7HG5S2EiFXGp5GlU",
-        authDomain: "focus-consultoria-kanban.firebaseapp.com",
-        projectId: "focus-consultoria-kanban",
-        storageBucket: "focus-consultoria-kanban.appspot.com",
-        messagingSenderId: "147109750225",
-        appId: "1:147109750225:web:9adf25b11ade24b2602cf0"
-    };
+        apiKey: "AIzaSyAqyBmCL9hD7qc0Uz73_tcQldTN1JDp1nY",
+        authDomain: "focus-kanban-board.firebaseapp.com",
+        projectId: "focus-kanban-board",
+        storageBucket: "focus-kanban-board.appspot.com",
+        messagingSenderId: "174381111412",
+        appId: "1:174381111412:web:e40c26ee6a79a6bf3b1921"
+      };
 
     firebase.initializeApp(firebaseConfig)
 })()

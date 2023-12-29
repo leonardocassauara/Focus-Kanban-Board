@@ -169,7 +169,7 @@ header button:hover {
 
 header {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     gap: 0px;
     padding: 4px;
 }
