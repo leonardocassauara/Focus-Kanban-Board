@@ -1,8 +1,9 @@
+<h2>
 <div style="font-size: 24px;">
     <img align="center" width="6%" src="https://i.imgur.com/9Abj0hl.png" style="padding-bottom: 5px;">
     <span href='https://focus-kanban-board.web.app'>Sistema de Gerenciamento de Atividades</span>
 </div>
-<hr>
+</h2>
 
 Quadro Kanban para gerenciar atividades empresariais. Embuído com **sistema de autenticação personalizado, página do webmaster, e CRUD em tempo-real** com banco de dados e website hospedados na Firebase. 
 
@@ -12,14 +13,35 @@ Quadro Kanban para gerenciar atividades empresariais. Embuído com **sistema de 
 
 <img align="center" width="auto" src="https://i.imgur.com/B3RLOo0.png"></img>
 
+<img align="center" width="auto" src="https://i.imgur.com/8Fu5cwV.png"></img>
+
 <img align="center" width="auto" src="https://i.imgur.com/b6xJEwG.png"></img>
 
 <br>
 
+<h3>
+<div style="font-size: 24px;">
+    <img align="center" width="6%" src="https://i.imgur.com/9Abj0hl.png" style="padding-bottom: 5px;">
+    Funcionalidades
+</div>
+</h3>
+<hr>
+
+* Sistema de Autenticação
+* Método de Registro a base de **e-mails permitidos**
+* Quadro Kanban Interativo com **CRUD e Drag n Drop**
+* Página de **Criação, Remoção e Edição** de Cards Kanban
+* Os **Cards** Kanban possuem **8 atributos**: *title, comment, description, responsable, sector, limitDate, column, order.*
+* As **Cores dos Cartões** são baseadas no valor do atributo *sector*
+<br>
+<br>
+
+<h3>
 <div style="font-size: 24px;">
     <img align="center" width="6%" src="https://i.imgur.com/9Abj0hl.png" style="padding-bottom: 5px;">
     Estado do Projeto
 </div>
+</h3>
 <hr>
 
 O projeto encontra-se estável para produção e pode ser acessado pelo 
@@ -27,10 +49,12 @@ O projeto encontra-se estável para produção e pode ser acessado pelo
 <br>
 <br>
 
+<h3>
 <div style="font-size: 24px;">
     <img align="center" width="6%" src="https://i.imgur.com/9Abj0hl.png" style="padding-bottom: 5px;">
     Desenvolvimento
 </div>
+</h3>
 <hr>
 
 Para o desenvolvimento do projeto foram escolhidas as tecnologias **JavaScript, HTML e CSS.**
@@ -41,10 +65,12 @@ As **etapas e os desafios do desenvolvimento** podem ser vistos com mais detalhe
 <br>
 <br>
 
+<h3>
 <div style="font-size: 24px;">
     <img align="center" width="6%" src="https://i.imgur.com/9Abj0hl.png" style="padding-bottom: 5px;">
     Desenvolvedores
 </div>
+</h3>
 <hr>
 
 * [João Paulo Moura](https://github.com/JPaulo-mrs)
