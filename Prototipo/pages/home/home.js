@@ -156,7 +156,7 @@ function createCard(card) {
     if (card.sector == 'Projetos') li.style.background = "#2F993D"
     else if (card.sector == 'GEP') li.style.background = "#E53324"
     else if (card.sector == 'Marketing') li.style.background = "#F6A52D"
-    else if (card.sector == 'Comercial') li.style.background = "#29DBE2"
+    else if (card.sector == 'Comercial') li.style.background = "#3C7FF9"
     else if (card.sector == 'Adm. Financeiro') li.style.background = "#495766"
     else if (card.sector == 'Presidência') li.style.background = "#8B5FA4"
 
