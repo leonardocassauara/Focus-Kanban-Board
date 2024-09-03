@@ -1,3 +1,7 @@
+body {
+    width: 100%;
+}
+
 header img {
     width: 10%;
     display: none;
@@ -53,6 +57,14 @@ button {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 3rem;
+    padding: 0 1rem;
+}
+
+.centralizeHome::-webkit-scrollbar {
+    display: none;
 }
 
 ul {
@@ -71,6 +83,11 @@ body .outline {
     top: 0;
 }
 
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
 #idManager {
     display: none;
@@ -81,6 +98,28 @@ body .outline {
     font-weight: 300;
 }
 
+.column-wrapper {
+    width: 100%;
+    max-width: 22rem;
+    min-width: 20rem;
+    padding: 1.5rem;
+    border-radius: 30px;
+    background-color:#FFF4F4;
+}
+
 div .content-container {
     border-radius: 20px;
+}
+
+@media (max-width: 1024px) {
+    .centralizeHome {
+        justify-content: initial;
+        padding-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .column-wrapper {
+        gap: 2rem;
+    }
 }
